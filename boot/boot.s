@@ -57,7 +57,9 @@ _start:
 # if sys finishes / exits the kernel, 
 # disable the interrupts with cli and sleep it with halt.
 # repeat the process.
+	
+halt_lp:	
 	cli
-halt_lp:	hlt
+	hlt
 	jmp halt_lp
 
