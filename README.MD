@@ -1,4 +1,4 @@
-# ronny_linnux 
+# ronny_linux 
 my very own operating system.
 
 ## Cross GNU Toolkit  
