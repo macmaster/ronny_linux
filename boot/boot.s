@@ -32,4 +32,32 @@ stack_bottom:
 .skip 16384
 stack_top:
 
+# _start headers
+# kernel entry point begins at _start as specfied by the linker script.
+# bootloader jumps into start once the kernel has been loaded.
+.section .text
+.global _start
+.type _start, @function
+
+# _start
+# once it enters start, we are in 32bit protected mode on an x86 machine.
+# interrupts and paging are disabled, and kernel has full control over CPU.
+# kernel provides all the code and implementation.
+# at this point, kernel has absolute power over the machine.
+_start:
+
+	# init the stack pointer for the C kernel
+	mov $stack_top, %esp
+
+	# (optional) initialize the processor state here before kernel
+
+	# call the kernel
+	call kernel_main
+
+# if sys finishes / exits the kernel, 
+# disable the interrupts with cli and sleep it with halt.
+# repeat the process.
+	cli
+halt_lp:	hlt
+	jmp halt_lp
 
