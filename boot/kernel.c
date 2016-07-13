@@ -52,7 +52,7 @@ size_t strlen(const char *str) {
 /* VGA and terminal constants */
 
 static const size_t VGA_WIDTH = 80;
-static const size_t VGA_HEIGT = 25;
+static const size_t VGA_HEIGHT = 25;
 
 size_t terminal_row;
 size_t terminal_column;
@@ -103,6 +103,6 @@ void terminal_putstr(const char *data) {
 /** kernel_main() **/
 
 void kernel_main() {
-	terminal_initialize();
+	terminal_init();
 	terminal_putstr("Welcome to ronny linux!\n");
 }
