@@ -20,8 +20,8 @@
 # within the first 8KiB of the kernel file.
 .section .multiboot
 .align 4
-.long FLAGS
 .long MAGIC
+.long FLAGS
 .long CHECKSUM
 
 # kernel needs to provide a 16KiB stack. 
