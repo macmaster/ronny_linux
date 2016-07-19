@@ -86,11 +86,19 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 }
 
 void terminal_putchar(char c) {
-	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
-	if(++terminal_column == VGA_WIDTH) {
-		terminal_column = 0;
-		if(++terminal_row == VGA_HEIGHT) {
-			terminal_row = 0;
+	if(c == '\n') {
+		terminal_column = 0; 
+		terminal_row = (terminal_row + 1) % VGA_HEIGHT;
+		return;
+	}
+	else {
+		/* putchar and word wrap */
+		terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+		if(++terminal_column == VGA_WIDTH) {
+			terminal_column = 0;
+			if(++terminal_row == VGA_HEIGHT) {
+				terminal_row = 0;
+			}
 		}
 	}
 }
@@ -107,4 +115,5 @@ void terminal_putstr(const char *data) {
 void kernel_main() {
 	terminal_init();
 	terminal_putstr("Welcome to ronny linux!\n");
+	terminal_putstr("This is my very first operating system\n");
 }
