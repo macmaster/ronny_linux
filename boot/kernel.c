@@ -80,27 +80,42 @@ void terminal_setcolor(uint8_t color) {
 	terminal_color = color;
 }
 
+/* translate text up one line */
+void terminal_scroll() {	
+	for(size_t y = 1; y < VGA_HEIGHT; y++) {
+		for(size_t x = 0; x < VGA_WIDTH; x++) {
+			const size_t old_index = y * VGA_WIDTH + x;
+			const size_t new_index = (y - 1) * VGA_WIDTH + x;
+			terminal_buffer[new_index] = terminal_buffer[old_index]; 
+			terminal_buffer[old_index] = VGAEntry(' ', BLACK);
+		}
+	}
+
+}
+
 void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 	const size_t index = y * VGA_WIDTH + x;
 	terminal_buffer[index] = VGAEntry(c, color);
 }
 
 void terminal_putchar(char c) {
+	/* output char */
 	if(c == '\n') {
 		terminal_column = 0; 
-		terminal_row = (terminal_row + 1) % VGA_HEIGHT;
-		return;
+		terminal_row += 1;
 	}
 	else {
-		/* putchar and word wrap */
 		terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
-		if(++terminal_column == VGA_WIDTH) {
-			terminal_column = 0;
-			if(++terminal_row == VGA_HEIGHT) {
-				terminal_row = 0;
-			}
-		}
+		terminal_column = (terminal_column + 1) % VGA_WIDTH;
+		terminal_row = terminal_column == 0 ? (terminal_row + 1) : terminal_row; 
 	}
+
+	/* terminal upscroll */
+	if(terminal_row == VGA_HEIGHT) {
+		terminal_row -= 1; 
+		terminal_scroll();
+	}
+
 }
 
 void terminal_putstr(const char *data) {
@@ -111,9 +126,12 @@ void terminal_putstr(const char *data) {
 }
 
 /** kernel_main() **/
-
 void kernel_main() {
 	terminal_init();
 	terminal_putstr("Welcome to ronny linux!\n");
 	terminal_putstr("This is my very first operating system\n");
+	for(int i = 2; i < 25; i++){
+		terminal_putstr("party party party!\n");
+	}
+	terminal_putstr("bass bass bass bass!");
 }
