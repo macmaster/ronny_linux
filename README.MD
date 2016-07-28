@@ -5,6 +5,7 @@ my very own operating system.
 Head over to the releases section and grab the toolkit.  
 Download the cross.tar.gz file.  
 ```bash
+# setup
 gunzip cross.tar.gz
 tar xf cross.tar
 rm cross.tar
@@ -14,5 +15,5 @@ export PATH="/usr/cross/bin:$PATH"
 
 
 ## Building
-build: `make ronny`
+build: `make ronny`  
 clean: `make clean`
